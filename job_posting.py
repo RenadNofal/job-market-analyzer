@@ -63,20 +63,36 @@ class JobPosting:
 
         self.skills = found
         return found
+    
+def yearly_salary(self) -> float | None:
+    """Return this job's salary converted to a yearly amount."""
 
-    def yearly_salary(self) -> float | None:
-        """
-        TODO (Madi): return this job's salary converted to a YEARLY amount, or None if there's no salary.
+    # Step 1: Determine which salary to use
+    if self.min_salary is not None and self.max_salary is not None:
+        salary = (self.min_salary + self.max_salary) / 2
+    else:
+        salary = self.med_salary
 
-        Steps:
-        1. Pick one number: the midpoint of min_salary and max_salary if both exist,
-           otherwise med_salary. If none exist, return None.
-        2. Convert it to yearly using pay_period, e.g.:
-           HOURLY -> x 2080 (40 hrs x 52 weeks), WEEKLY -> x 52, BIWEEKLY -> x 26,
-           MONTHLY -> x 12, YEARLY -> x 1
-        Tip: a dictionary like {"HOURLY": 2080, ...} makes this easy.
-        """
-        raise NotImplementedError("yearly_salary() isn't built yet")
+    # Step 2: If no salary information exists, return None
+    if salary is None:
+        return None
+
+    # Step 3: Conversion factors for each pay period
+    conversion = {
+        "HOURLY": 2080,
+        "WEEKLY": 52,
+        "BIWEEKLY": 26,
+        "MONTHLY": 12,
+        "YEARLY": 1
+    }
+
+    # Step 4: Convert the salary to yearly
+    factor = conversion.get(self.pay_period)
+
+    if factor is None:
+        return None
+
+    return salary * factor
 
     def __str__(self) -> str:
         company = self.company if self.company else "Unknown company"

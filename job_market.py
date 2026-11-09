@@ -47,17 +47,52 @@ class JobMarket:
             )
             self.postings.append(posting)
 
-    @staticmethod
-    def clean(df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Owner: Madi. Clean the raw data before we turn it into objects.
-        Already done: drop duplicate jobs and rows with no description.
-        TODO (Madi) ideas: strip extra spaces in titles, check for weird salary values
-        (like 0 or huge numbers), and print how many rows were removed at each step.
-        """
-        df = df.drop_duplicates(subset="job_id")
-        df = df.dropna(subset=["description", "title"])
-        return df
+   @staticmethod
+def clean(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Clean the raw LinkedIn job posting data.
+    Removes duplicates, missing information, and invalid salary values.
+    """
+
+    original_count = len(df)
+
+    # Remove duplicate job postings
+    df = df.drop_duplicates(subset="job_id")
+    duplicates_removed = original_count - len(df)
+
+    # Remove jobs without a description or title
+    before_missing = len(df)
+    df = df.dropna(subset=["description", "title"])
+    missing_removed = before_missing - len(df)
+
+    # Remove extra spaces from job titles
+    df["title"] = df["title"].str.strip()
+
+    # Remove rows with empty titles or descriptions
+    before_empty = len(df)
+    df = df[
+        (df["title"] != "") &
+        (df["description"].str.strip() != "")
+    ]
+    empty_removed = before_empty - len(df)
+
+    # Remove invalid salary values
+    salary_columns = ["min_salary", "max_salary", "med_salary"]
+
+    for column in salary_columns:
+        if column in df.columns:
+            df.loc[df[column] <= 0, column] = None
+
+    # Print cleaning results
+    print("Data Cleaning Results")
+    print("---------------------")
+    print(f"Duplicate jobs removed: {duplicates_removed}")
+    print(f"Missing information removed: {missing_removed}")
+    print(f"Empty titles/descriptions removed: {empty_removed}")
+    print(f"Original rows: {original_count}")
+    print(f"Remaining rows: {len(df)}")
+
+    return df
 
     def extract_all_skills(self, skill_list: list[str]) -> None:
         """Run the skill extractor on every posting."""

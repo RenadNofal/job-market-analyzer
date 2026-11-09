@@ -32,4 +32,19 @@ SKILLS: list[str] = [
     "patient care", "cpr", "ehr", "bls",
     # Languages
     "spanish", "bilingual",
+
+    # Additional software and IT
+"react", "node.js", "typescript", "docker", "kubernetes",
+"linux administration", "windows", "powershell", "bash",
+"software development", "software engineering",
+"database management", "postgresql", "mysql", "mongodb",
+
+# Additional data skills
+"pandas", "numpy", "r programming", "data science",
+"data engineering", "artificial intelligence",
+
+# Additional cybersecurity skills
+"penetration testing", "incident response",
+"information security", "risk management",
+"vulnerability assessment", "siem"
 ]
