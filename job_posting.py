@@ -5,6 +5,9 @@ Owner: Madi
 """
 from __future__ import annotations
 
+# Yearly salaries outside this range are treated as data errors and ignored
+MIN_YEARLY_SALARY = 15_000
+MAX_YEARLY_SALARY = 500_000
 
 class JobPosting:
     """One job posting: its basic info, salary, and the skills found in it."""
@@ -64,35 +67,42 @@ class JobPosting:
         self.skills = found
         return found
     
-def yearly_salary(self) -> float | None:
-    """Return this job's salary converted to a yearly amount."""
+    def yearly_salary(self) -> float | None:
+        """Return this job's salary converted to a yearly amount."""
 
-    # Step 1: Determine which salary to use
-    if self.min_salary is not None and self.max_salary is not None:
-        salary = (self.min_salary + self.max_salary) / 2
-    else:
-        salary = self.med_salary
+        # Step 1: Determine which salary to use
+        if self.min_salary is not None and self.max_salary is not None:
+            salary = (self.min_salary + self.max_salary) / 2
+        else:
+            salary = self.med_salary
 
-    # Step 2: If no salary information exists, return None
-    if salary is None:
-        return None
+        # Step 2: If no salary information exists, return None
+        if salary is None:
+            return None
 
-    # Step 3: Conversion factors for each pay period
-    conversion = {
-        "HOURLY": 2080,
-        "WEEKLY": 52,
-        "BIWEEKLY": 26,
-        "MONTHLY": 12,
-        "YEARLY": 1
-    }
+        # Step 3: Conversion factors for each pay period
+        conversion = {
+            "HOURLY": 2080,
+            "WEEKLY": 52,
+            "BIWEEKLY": 26,
+            "MONTHLY": 12,
+            "YEARLY": 1
+        }
 
-    # Step 4: Convert the salary to yearly
-    factor = conversion.get(self.pay_period)
+        # Step 4: Convert the salary to yearly
+        factor = conversion.get(self.pay_period)
 
-    if factor is None:
-        return None
+        if factor is None:
+            return None
 
-    return salary * factor
+        yearly = salary * factor
+
+        # Step 5: Skip unrealistic salaries. Some postings say YEARLY but list an hourly
+        # wage (e.g. "$16-20 per year"), and a few list huge partner payouts.
+        if yearly < MIN_YEARLY_SALARY or yearly > MAX_YEARLY_SALARY:
+            return None
+
+        return yearly
 
     def __str__(self) -> str:
         company = self.company if self.company else "Unknown company"
