@@ -4,9 +4,11 @@ The Candidate class: the user's own skills, compared against the job market.
 Owner: Samantha
 """
 from __future__ import annotations
+import json
 
 from job_market import JobMarket
 from job_posting import JobPosting
+
 
 
 class Candidate:
@@ -24,37 +26,64 @@ class Candidate:
 
     def match_score(self, posting: JobPosting) -> float:
         """
-        TODO (Samantha): return the % of this posting's skills that the candidate has (0-100).
+        (Samantha): return the % of this posting's skills that the candidate has (0-100).
         Example: posting needs ["sql", "excel", "tableau"], candidate has sql + excel -> 66.7
         Watch out: if the posting has no skills, avoid dividing by zero (return 0.0).
         """
-        raise NotImplementedError("match_score() isn't built yet")
+        matching_skills = len(self.skills & set(posting.skills))
+        total_skills = len(posting.skills)
+        if total_skills == 0:
+            return 0.0
+        return(matching_skills / total_skills)*100
+
+    
 
     def best_matches(self, market: JobMarket, n: int = 5) -> list[tuple[JobPosting, float]]:
         """
-        TODO (Samantha): return the n postings with the highest match_score, highest first.
+        (Samantha): return the n postings with the highest match_score, highest first.
         """
-        raise NotImplementedError("best_matches() isn't built yet")
+        matches = []
+
+        for posting in market.postings:
+            score = self.match_score(posting)
+            matches.append((posting, score))
+        matches.sort(key= lambda match: match[1], reverse= True)
+        return matches[:n]
+        
 
     def missing_skills(self, market: JobMarket, n: int = 10) -> list[tuple[str, int]]:
         """
-        TODO (Samantha): return the in-demand skills the candidate does NOT have,
+        (Samantha): return the in-demand skills the candidate does NOT have,
         ranked by how many postings ask for them.
         Hint: use market.top_skills(...) and skip the ones in self.skills.
         """
-        raise NotImplementedError("missing_skills() isn't built yet")
+        top_skills= market.top_skills()
+        missing = [] 
+
+        for skill, count in top_skills:
+            if skill not in self.skills:
+                missing.append((skill, count))
+        return missing[:n]
+        
 
     def save(self, path: str) -> None:
         """
-        TODO (Samantha): save name + skills to a JSON file.
+         (Samantha): save name + skills to a JSON file.
         Hint: json can't save sets, so convert with list(self.skills).
         """
-        raise NotImplementedError("save() isn't built yet")
+        data = {
+            "name": self.name,
+            "skills": list(self.skills)
+        }
+        with open(path, "w") as f:
+            json.dump(data,f, indent=5)
 
     @classmethod
     def load(cls, path: str) -> Candidate:
         """
-        TODO (Samantha): read the JSON file and return a new Candidate.
+         (Samantha): read the JSON file and return a new Candidate.
         Hint: with open(path) as f: data = json.load(f)
-        """
-        raise NotImplementedError("load() isn't built yet")
+        """ 
+        with open(path, "r") as f:
+            data = json.load(f)
+        return cls(data["name"], set(data["skills"]))
