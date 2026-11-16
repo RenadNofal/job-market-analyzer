@@ -103,33 +103,105 @@ class JobMarket:
 
     def top_skills(self, n: int = 10) -> list[tuple[str, int]]:
         """
-        TODO (Renad): return the n most-requested skills and how many postings mention each,
+        Return the n most-requested skills and how many postings mention each,
         e.g. [("communication", 812), ("sales", 540), ...]
-        Hint: loop over self.postings and count with a dictionary, then sort by the count.
         """
-        raise NotImplementedError("top_skills() isn't built yet")
+        # Step 1: count how many postings mention each skill.
+        # counts looks like {"excel": 412, "communication": 812, ...}
+        counts: dict[str, int] = {}
+        for posting in self.postings:
+            for skill in posting.skills:
+                # .get(skill, 0) gives 0 the first time we see a skill, so we can always add 1
+                counts[skill] = counts.get(skill, 0) + 1
+
+        # Step 2: sort the (skill, count) pairs by count, biggest first.
+        # pair[1] is the count; reverse=True means highest to lowest.
+        ranked = sorted(counts.items(), key=lambda pair: pair[1], reverse=True)
+
+        # Step 3: keep only the top n
+        return ranked[:n]
 
     def salary_by_skill(self, min_postings: int = 10) -> dict[str, float]:
         """
-        TODO (Renad): return the average YEARLY salary for postings that mention each skill.
-        Use posting.yearly_salary() (Madi's method) and skip postings where it returns None.
-        Only include skills that have at least min_postings salaries, so averages are fair.
+        Return the average YEARLY salary for postings that mention each skill,
+        e.g. {"python": 118000.0, "sales": 71000.0, ...}
+        Only skills with at least min_postings salaries are included, so one or two
+        unusual jobs can't make a skill look much better or worse than it really is.
         """
-        raise NotImplementedError("salary_by_skill() isn't built yet")
+        # Step 1: add up the salaries for each skill, and count how many we added.
+        # totals = {"excel": 4_250_000, ...}   counts = {"excel": 61, ...}
+        totals: dict[str, float] = {}
+        counts: dict[str, int] = {}
+        for posting in self.postings:
+            salary = posting.yearly_salary()   # Madi's method: yearly amount or None
+            if salary is None:
+                continue                       # no salary listed, so skip this posting
+            for skill in posting.skills:
+                totals[skill] = totals.get(skill, 0) + salary
+                counts[skill] = counts.get(skill, 0) + 1
+
+        # Step 2: average = total / count, but only for skills with enough salaries
+        averages: dict[str, float] = {}
+        for skill in totals:
+            if counts[skill] >= min_postings:
+                averages[skill] = totals[skill] / counts[skill]
+
+        return averages
 
     def jobs_by_location(self, n: int = 10) -> list[tuple[str, int]]:
         """
-        TODO (Renad): return the n locations with the most postings, e.g. [("New York, NY", 210), ...]
+        Return the n locations with the most postings, e.g. [("New York, NY", 210), ...]
+        Same counting pattern as top_skills(), but each posting has one location.
         """
-        raise NotImplementedError("jobs_by_location() isn't built yet")
+        # Step 1: count postings per location, e.g. {"New York, NY": 210, ...}
+        counts: dict[str, int] = {}
+        for posting in self.postings:
+            counts[posting.location] = counts.get(posting.location, 0) + 1
+
+        # Step 2: sort by count, biggest first, and keep the top n
+        ranked = sorted(counts.items(), key=lambda pair: pair[1], reverse=True)
+        return ranked[:n]
 
     # ---------- Charts ----------
 
     def plot_top_skills(self, n: int = 10, folder: str = "output") -> str:
         """
-        TODO (Renad): draw a bar chart of top_skills(n) with matplotlib,
+        Draw a horizontal bar chart of top_skills(n) with matplotlib,
         save it as a PNG in the output folder, and return the file path.
-        Hint: plt.barh(names, counts), plt.tight_layout(), plt.savefig(path), plt.close()
         """
-        os.makedirs(folder, exist_ok=True)
-        raise NotImplementedError("plot_top_skills() isn't built yet")
+        os.makedirs(folder, exist_ok=True)   # make the folder if it doesn't exist yet
+
+        # Step 1: get the data and split the pairs into two lists
+        ranked = self.top_skills(n)
+        names = [skill for skill, count in ranked]
+        counts = [count for skill, count in ranked]
+
+        # barh draws the first item at the bottom, so reverse the lists to put #1 on top
+        names.reverse()
+        counts.reverse()
+
+        # Step 2: draw the bars
+        fig, ax = plt.subplots(figsize=(8, 0.45 * len(names) + 1.5))
+        ax.set_facecolor("#fcfcfb")   # same off-white as the saved background
+        bars = ax.barh(names, counts, color="#2a78d6", height=0.7)
+
+        # Write the count at the end of each bar so readers don't have to guess from the axis
+        for bar, count in zip(bars, counts):
+            ax.text(bar.get_width(), bar.get_y() + bar.get_height() / 2, f" {count:,}",
+                    va="center", fontsize=9, color="#52514e")
+
+        # Step 3: titles and a clean, simple look
+        ax.set_title(f"Top {len(names)} skills in {len(self.postings):,} job postings",
+                     loc="left", fontsize=13, color="#0b0b0b")
+        ax.set_xlabel("Number of postings that mention the skill", color="#52514e")
+        ax.spines[["top", "right"]].set_visible(False)       # hide the box around the chart
+        ax.grid(axis="x", color="#e5e4e0", linewidth=0.8)    # light guide lines
+        ax.set_axisbelow(True)                               # keep guide lines behind the bars
+        ax.margins(x=0.1)                                    # leave room for the count labels
+
+        # Step 4: save the chart as a PNG and close it to free memory
+        path = os.path.join(folder, "top_skills.png")
+        fig.tight_layout()
+        fig.savefig(path, dpi=150, facecolor="#fcfcfb")
+        plt.close(fig)
+        return path
