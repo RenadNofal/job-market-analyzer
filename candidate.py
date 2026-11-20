@@ -57,7 +57,8 @@ class Candidate:
         ranked by how many postings ask for them.
         Hint: use market.top_skills(...) and skip the ones in self.skills.
         """
-        top_skills= market.top_skills()
+        top_skills = market.top_skills(n + len(self.skills))
+        
         missing = [] 
 
         for skill, count in top_skills:
