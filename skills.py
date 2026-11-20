@@ -16,20 +16,23 @@ SKILLS: list[str] = [
     "data analysis", "data visualization", "machine learning", "looker",
     # Software & IT
     "java", "javascript", "c++", "c#", "html", "css", "aws", "azure",
-    "linux", "networking", "cybersecurity", "git", "api",
+    "linux", "networking", "cybersecurity", "git", "api", "cloud computing",
+    "cloud platforms", "autocad", "revit", "computer-aided design", "sketchup",
+    "rhino","3ds max",
     # Business tools
     "microsoft office", "word", "powerpoint", "outlook", "salesforce",
-    "sap", "quickbooks", "crm", "jira",
+    "sap", "quickbooks", "crm", "jira", "microsoft excel"
     # Business skills
     "project management", "customer service", "sales", "marketing",
-    "accounting", "budgeting", "scheduling", "social media", "negotiation",
+    "accounting", "budgeting", "scheduling", "social media", "negotiation", "product management", "financial management",
+    "financial planning"
     # Soft skills
     "communication", "leadership", "teamwork", "problem solving",
-    "time management", "attention to detail", "organization",
+    "time management", "attention to detail", "organization", "project coordination"
     # Design
-    "photoshop", "adobe", "autocad", "figma",
+    "photoshop", "adobe", "autocad", "figma", "product design", "cad"
     # Healthcare
-    "patient care", "cpr", "ehr", "bls",
+    "patient care", "cpr", "ehr", "bls", "medical terminology"
     # Languages
     "spanish", "bilingual",
 
@@ -41,7 +44,7 @@ SKILLS: list[str] = [
 
 # Additional data skills
 "pandas", "numpy", "r programming", "data science",
-"data engineering", "artificial intelligence",
+"data engineering", "artificial intelligence", "data management"
 
 # Additional cybersecurity skills
 "penetration testing", "incident response",
