@@ -6,6 +6,10 @@ Owner: everyone (add skills as you find them in the data!)
 Tips:
 - Write every skill in lowercase.
 - Multi-word skills are fine ("power bi", "project management").
+- Put a comma after EVERY skill, even at the end of a line. Without it, Python
+  silently joins two strings into one ("cad" "patient care" -> "cadpatient care").
+- Use spaces instead of - or . ("node js", not "node.js"), because the skill
+  extractor turns those characters into spaces.
 - Avoid skills that are also common English words (e.g. "go", "r")
   unless you're okay with some false matches.
 """
@@ -17,37 +21,37 @@ SKILLS: list[str] = [
     # Software & IT
     "java", "javascript", "c++", "c#", "html", "css", "aws", "azure",
     "linux", "networking", "cybersecurity", "git", "api", "cloud computing",
-    "cloud platforms", "autocad", "revit", "computer-aided design", "sketchup",
-    "rhino","3ds max",
+    "cloud platforms", "revit", "computer aided design", "sketchup",
+    "rhino", "3ds max",
     # Business tools
     "microsoft office", "word", "powerpoint", "outlook", "salesforce",
-    "sap", "quickbooks", "crm", "jira", "microsoft excel"
+    "sap", "quickbooks", "crm", "jira", "microsoft excel",
     # Business skills
     "project management", "customer service", "sales", "marketing",
-    "accounting", "budgeting", "scheduling", "social media", "negotiation", "product management", "financial management",
-    "financial planning"
+    "accounting", "budgeting", "scheduling", "social media", "negotiation",
+    "product management", "financial management", "financial planning",
     # Soft skills
     "communication", "leadership", "teamwork", "problem solving",
-    "time management", "attention to detail", "organization", "project coordination"
+    "time management", "attention to detail", "organization", "project coordination",
     # Design
-    "photoshop", "adobe", "autocad", "figma", "product design", "cad"
+    "photoshop", "adobe", "autocad", "figma", "product design", "cad",
     # Healthcare
-    "patient care", "cpr", "ehr", "bls", "medical terminology"
+    "patient care", "cpr", "ehr", "bls", "medical terminology",
     # Languages
     "spanish", "bilingual",
 
     # Additional software and IT
-"react", "node.js", "typescript", "docker", "kubernetes",
-"linux administration", "windows", "powershell", "bash",
-"software development", "software engineering",
-"database management", "postgresql", "mysql", "mongodb",
+    "react", "node js", "typescript", "docker", "kubernetes",
+    "linux administration", "windows", "powershell", "bash",
+    "software development", "software engineering",
+    "database management", "postgresql", "mysql", "mongodb",
 
-# Additional data skills
-"pandas", "numpy", "r programming", "data science",
-"data engineering", "artificial intelligence", "data management"
+    # Additional data skills
+    "pandas", "numpy", "r programming", "data science",
+    "data engineering", "artificial intelligence", "data management",
 
-# Additional cybersecurity skills
-"penetration testing", "incident response",
-"information security", "risk management",
-"vulnerability assessment", "siem"
+    # Additional cybersecurity skills
+    "penetration testing", "incident response",
+    "information security", "risk management",
+    "vulnerability assessment", "siem",
 ]
