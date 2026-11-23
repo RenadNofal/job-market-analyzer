@@ -47,7 +47,11 @@ class Candidate:
         for posting in market.postings:
             score = self.match_score(posting)
             matches.append((posting, score))
-        matches.sort(key= lambda match: match[1], reverse= True)
+
+        # Sort by how many skills the posting shares with the candidate first, then by score.
+        # Sorting by score alone ranks a job that only mentions "communication" as a 100% match.
+        matches.sort(key=lambda match: (len(self.skills & set(match[0].skills)), match[1]),
+                     reverse=True)
         return matches[:n]
         
 
