@@ -22,7 +22,7 @@ SKILLS: list[str] = [
     "java", "javascript", "c++", "c#", "html", "css", "aws", "azure",
     "linux", "networking", "cybersecurity", "git", "api", "cloud computing",
     "cloud platforms", "revit", "computer aided design", "sketchup",
-    "rhino", "3ds max",
+    "rhino", "3ds max","quickbooks", "google suite",
     # Business tools
     "microsoft office", "word", "powerpoint", "outlook", "salesforce",
     "sap", "quickbooks", "crm", "jira", "microsoft excel",
@@ -32,11 +32,14 @@ SKILLS: list[str] = [
     "product management", "financial management", "financial planning",
     # Soft skills
     "communication", "leadership", "teamwork", "problem solving",
-    "time management", "attention to detail", "organization", "project coordination",
+    "time management", "attention to detail", "organization", "project coordination", 
+    "interpersonal"   
     # Design
-    "photoshop", "adobe", "autocad", "figma", "product design", "cad",
+    "photoshop", "adobe", "autocad", "figma", "product design", "cad", "adobe creative suite"
+    
     # Healthcare
-    "patient care", "cpr", "ehr", "bls", "medical terminology",
+    "patient care", "cpr", "ehr", "bls", "medical terminology","immunology","gastroenterology",
+    
     # Languages
     "spanish", "bilingual",
 
