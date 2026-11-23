@@ -10,6 +10,8 @@ Read the output and copy any real skills into skills.py.
 Run:  python3 find_skills.py
 """
 
+import os
+
 import pandas as pd
 
 from skills import SKILLS
@@ -58,8 +60,9 @@ def is_useful(word: str) -> bool:
     return word not in STOP_WORDS and not word.isdigit() and len(word) >= 2
 
 
-# 1) Load the data
-df = pd.read_csv("data/postings.csv", nrows=ROWS_TO_LOAD)
+# 1) Load the data: use the full Kaggle file if you have it, otherwise the 5,000-row sample on GitHub
+data_file = "data/postings.csv" if os.path.exists("data/postings.csv") else "data/postings_sample.csv"
+df = pd.read_csv(data_file, nrows=ROWS_TO_LOAD)
 if TITLE_FILTER:
     df = df[df["title"].str.contains(TITLE_FILTER, case=False, na=False)]
 descriptions = df["description"].dropna()

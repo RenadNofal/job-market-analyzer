@@ -12,7 +12,7 @@ from candidate import Candidate
 from job_market import JobMarket
 from skills import SKILLS
 
-DATA_PATH = "data/postings.csv"
+DATA_PATH = "data/postings_sample.csv"   # first 5,000 rows of the Kaggle postings.csv
 PROFILE_PATH = "output/profile.json"
 SAMPLE_SIZE = 5000   # how many postings to load (the full file is very large)
 

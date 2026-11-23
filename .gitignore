@@ -221,3 +221,5 @@ __marimo__/
 
 data/*.csv
 .vscode/
+# The 5,000-row sample is small enough for GitHub, so include it
+!data/postings_sample.csv

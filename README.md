@@ -7,8 +7,7 @@ Analyzes real LinkedIn job postings to find the most in-demand skills, average s
 ## Setup
 
 1. Install the libraries: `python3 -m pip install -r requirements.txt`
-2. Download the dataset from Kaggle: [LinkedIn Job Postings (2023–2024)](https://www.kaggle.com/datasets/arshkon/linkedin-job-postings)
-3. Put `postings.csv` in the `data/` folder (it is not uploaded to GitHub because it's too large).
+2. That's it. The data is included: `data/postings_sample.csv` holds the first 5,000 postings from the Kaggle dataset [LinkedIn Job Postings (2023–2024)](https://www.kaggle.com/datasets/arshkon/linkedin-job-postings). The full `postings.csv` (about 490 MB) is too large for GitHub, so it is not uploaded.
 
 ## Run
 
@@ -25,7 +24,9 @@ python3 main.py
 | `job_market.py` | `JobMarket` class: loads, cleans and analyzes all postings, makes charts | Renad |
 | `candidate.py` | `Candidate` class: user's skills, match score, missing skills, save/load | Samantha |
 | `skills.py` | List of skills to search for | Everyone |
-| `data/` | The Kaggle CSV (not on GitHub) | |
+| `explore.py` | One-off data exploration script | |
+| `find_skills.py` | Helper that finds skills in job ads that aren't in `skills.py` yet | Renad |
+| `data/postings_sample.csv` | First 5,000 postings from the Kaggle dataset | |
 | `output/` | Saved charts and the user profile | |
 
 ## Notes about the data (first 5,000 rows)

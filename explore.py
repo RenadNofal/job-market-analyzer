@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("data/postings.csv", nrows=5000)
+df = pd.read_csv("data/postings_sample.csv", nrows=5000)
 print(df.shape)
 print(df.columns.tolist())
 print(df.isna().sum())
