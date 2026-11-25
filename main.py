@@ -53,6 +53,7 @@ def edit_skills(candidate: Candidate) -> None:
 
 
 def main() -> None:
+    """Load the data, load or create the user's profile, then run the menu until they quit."""
     os.makedirs("output", exist_ok=True)
 
     print("Loading job postings...")

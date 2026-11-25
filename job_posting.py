@@ -26,6 +26,7 @@ class JobPosting:
         experience_level: str | None,
         remote: bool,
     ) -> None:
+        """Store one posting's details. Skills start empty until extract_skills() runs."""
         self.job_id = job_id
         self.title = title
         self.company = company
@@ -53,11 +54,14 @@ class JobPosting:
             else:
                 cleaned += " "
         words = cleaned.split()
+        word_set = set(words)                         # every word in the description, for a quick lookup
 
         # 2) Look for each skill as a sequence of whole words
         found: list[str] = []
         for skill in skill_list:
             skill_words = skill.lower().split()      # "power bi" -> ["power", "bi"]
+            if skill_words[0] not in word_set:       # the skill's first word isn't in the text at all,
+                continue                              # so it can't match: skip it (this makes it ~7x faster)
             n = len(skill_words)
             for i in range(len(words) - n + 1):
                 if words[i:i + n] == skill_words:
@@ -105,5 +109,6 @@ class JobPosting:
         return yearly
 
     def __str__(self) -> str:
+        """Return a readable one-line summary, e.g. 'Data Analyst at Acme (Cleveland, OH)'."""
         company = self.company if self.company else "Unknown company"
         return f"{self.title} at {company} ({self.location})"

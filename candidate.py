@@ -15,13 +15,16 @@ class Candidate:
     """The person using the program: their name and skills."""
 
     def __init__(self, name: str, skills: set[str] | None = None) -> None:
+        """Create a candidate with a name and an optional starting set of skills."""
         self.name = name
         self.skills: set[str] = skills if skills else set()
 
     def add_skill(self, skill: str) -> None:
+        """Add a skill, cleaned up to lowercase with no extra spaces."""
         self.skills.add(skill.strip().lower())
 
     def remove_skill(self, skill: str) -> None:
+        """Remove a skill if the candidate has it (does nothing otherwise)."""
         self.skills.discard(skill.strip().lower())
 
     def match_score(self, posting: JobPosting) -> float:

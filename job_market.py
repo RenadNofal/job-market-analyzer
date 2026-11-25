@@ -13,7 +13,7 @@ import pandas as pd
 from job_posting import JobPosting
 
 
-def _value_or_none(value):
+def _value_or_none(value: object) -> object | None:
     """pandas uses NaN for missing values; turn those into None so they're easier to check."""
     return None if pd.isna(value) else value
 
@@ -22,6 +22,7 @@ class JobMarket:
     """Holds a list of JobPosting objects and answers questions about them."""
 
     def __init__(self) -> None:
+        """Start with an empty list of postings; load_from_csv() fills it."""
         self.postings: list[JobPosting] = []
 
     # ---------- Loading & cleaning ----------
